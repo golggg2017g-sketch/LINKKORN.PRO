@@ -1,4 +1,4 @@
-[bot.html](https://github.com/user-attachments/files/22061566/bot.html)
+[bot.html](https://github.com/user-attachments/files/22061604/bot.html)
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -638,25 +638,23 @@
         // ----------------- Инициализация и обработка событий -----------------
 
         // Функция инициализации приложения
-        function initializeApp() {
-            console.log("Initializing app...");
-            resetAppState(); // Вызываем сброс состояния в самом начале
+function initializeApp() {
+    console.log("Initializing app...");
+    resetAppState(); // Вызываем сброс состояния в самом начале
 
-            // Убедитесь, что все модальные окна скрыты
-        document.querySelectorAll('.modal').forEach(modal => modal.classList.add('hidden'));
-            passwordModal.classList.add('hidden');
-            detailsView.classList.add('hidden');
-            orderFormModal.classList.add('hidden');
-            paymentModal.classList.add('hidden');
-            modalMessage.classList.add('hidden');
-            adminPanel.classList.add('hidden');
+    // Убедитесь, что все модальные окна скрыты при инициализации
+    document.getElementById('password-modal').classList.add('hidden');
+    document.getElementById('details-view').classList.add('hidden');
+    document.getElementById('order-form-modal').classList.add('hidden');
+    document.getElementById('payment-modal').classList.add('hidden');
+    document.getElementById('modal-message').classList.add('hidden');
 
-        // Отобразите основной контент
-        document.getElementById('main-content').classList.remove('hidden');
+    // Отобразите основной контент
+    document.getElementById('main-content').classList.remove('hidden');
 
-        // Отфильтруйте и отобразите товары
-            filterProducts();
-        }
+    // Отфильтруйте и отобразите товары
+    filterProducts();
+}
 
         // Используем Telegram.WebApp.ready() для надежной инициализации
         // Если объект Telegram.WebApp существует, используем его
