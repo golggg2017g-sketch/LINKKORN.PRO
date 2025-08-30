@@ -1,4 +1,4 @@
-[bot.html](https://github.com/user-attachments/files/22060022/bot.html)
+[bot.html](https://github.com/user-attachments/files/22061566/bot.html)
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -643,16 +643,18 @@
             resetAppState(); // Вызываем сброс состояния в самом начале
 
             // Убедитесь, что все модальные окна скрыты
-            document.getElementById('password-modal').classList.add('hidden');
-            document.getElementById('details-view').classList.add('hidden');
-            document.getElementById('order-form-modal').classList.add('hidden');
-            document.getElementById('payment-modal').classList.add('hidden');
-            document.getElementById('modal-message').classList.add('hidden');
+        document.querySelectorAll('.modal').forEach(modal => modal.classList.add('hidden'));
+            passwordModal.classList.add('hidden');
+            detailsView.classList.add('hidden');
+            orderFormModal.classList.add('hidden');
+            paymentModal.classList.add('hidden');
+            modalMessage.classList.add('hidden');
+            adminPanel.classList.add('hidden');
 
-            // Отобразите основной контент
-            document.getElementById('main-content').classList.remove('hidden');
+        // Отобразите основной контент
+        document.getElementById('main-content').classList.remove('hidden');
 
-         // Отфильтруйте и отобразите товары
+        // Отфильтруйте и отобразите товары
             filterProducts();
         }
 
