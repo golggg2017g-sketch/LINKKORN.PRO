@@ -1,4 +1,4 @@
-[bot.html](https://github.com/user-attachments/files/22061604/bot.html)
+[bot.html](https://github.com/user-attachments/files/22061641/bot.html)
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -656,19 +656,16 @@ function initializeApp() {
     filterProducts();
 }
 
-        // Используем Telegram.WebApp.ready() для надежной инициализации
-        // Если объект Telegram.WebApp существует, используем его
-        if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
-            Telegram.WebApp.ready();
-            Telegram.WebApp.onEvent('mainButtonClicked', () => {
-                // Обработка клика по основной кнопке, если нужно
-            });
-            // Вызываем инициализацию, когда Telegram Web App готов
-            initializeApp();
-        } else {
-            // Запасной вариант для обычной веб-страницы (не в Telegram)
-            document.addEventListener('DOMContentLoaded', initializeApp);
-        }
+    // Используем Telegram.WebApp.ready() для надежной инициализации
+    if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
+    Telegram.WebApp.ready(() => {
+    console.log("Telegram Web App is ready.");
+    initializeApp();
+    });
+}       else {
+        // Запасной вариант для обычной веб-страницы (не в Telegram)
+        document.addEventListener('DOMContentLoaded', initializeApp);
+    }
         
         // Обработчики событий
         adminLoginBtn.addEventListener('click', () => {
