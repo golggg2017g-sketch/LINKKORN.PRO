@@ -1,4 +1,4 @@
-[bot.html](https://github.com/user-attachments/files/22061641/bot.html)
+[bot.html](https://github.com/user-attachments/files/22061658/bot.html)
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -753,27 +753,28 @@ function initializeApp() {
             orderFormModal.classList.add('hidden');
         });
 
-        orderForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = document.getElementById('order-name').value;
-            const address = document.getElementById('order-address').value;
-            const email = document.getElementById('order-email').value;
-            const phone = document.getElementById('order-phone').value;
+        orderForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('order-name').value;
+    const address = document.getElementById('order-address').value;
+    const email = document.getElementById('order-email').value;
+    const phone = document.getElementById('order-phone').value;
 
-            if (name && address && email && phone) {
-                orderData = {
-                    product_id: selectedProduct.id,
-                    product_name: selectedProduct.name,
-                    size: selectedSize || 'N/A',
-                    product_price: selectedProduct.price,
-                    name: name,
-                    address: address,
-                    email: email,
-                    phone: phone
-                };
+    if (name && address && email && phone) {
+        orderData = {
+            product_id: selectedProduct.id,
+            product_name: selectedProduct.name,
+            size: selectedSize || 'N/A',
+            product_price: selectedProduct.price,
+            name: name,
+            address: address,
+            email: email,
+            phone: phone
+        };
+
                 orderFormModal.classList.add('hidden');
                 document.getElementById('payment-price').textContent = `${orderData.product_price} ₽`;
-                paymentModal.classList.remove('hidden');
+                paymentModal.classList.remove('hidden'); // Вот эта строка
             } else {
                 document.getElementById('form-error').classList.remove('hidden');
             }
