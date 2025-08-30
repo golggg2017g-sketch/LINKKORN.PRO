@@ -1,4 +1,4 @@
-[bot.html](https://github.com/user-attachments/files/22061658/bot.html)
+[bot.html](https://github.com/user-attachments/files/22061665/bot.html)
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -339,39 +339,6 @@
                     Отмена
                 </button>
             </form>
-        </div>
-    </div>
-
-    <!-- Модальное окно для оплаты -->
-    <div id="payment-modal" class="modal hidden">
-        <div class="bg-white p-6 rounded-box shadow-2xl border-2 border-black max-w-lg w-full relative">
-            <h3 class="text-xl font-semibold mb-4 text-black text-center">Оплата заказа</h3>
-            <p class="text-sm text-gray-600 text-center mb-4">Для оплаты переведите средства на указанную карту, затем нажмите "Я оплатил".</p>
-            
-            <div class="bg-gray-100 p-4 rounded-box border-2 border-black mb-4">
-                <div class="flex justify-between items-center mb-2">
-                    <span class="font-semibold text-black">Номер карты:</span>
-                    <span id="card-number" class="text-black">1234 5678 9012 3456</span>
-                    <button id="copy-card-btn" class="bg-white text-black py-1 px-3 rounded-btn text-xs hover:bg-gray-200 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-2M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6 4h.01" />
-                        </svg>
-                        Копировать
-                    </button>
-                </div>
-                <div class="flex justify-between items-center">
-                    <span class="font-semibold text-black">Сумма к оплате:</span>
-                    <span id="payment-price" class="font-bold text-black"></span>
-                </div>
-            </div>
-
-            <button id="payment-confirm-btn" class="w-full bg-black text-white font-semibold py-3 px-6 rounded-btn transition duration-300 transform hover:scale-105">
-                Я оплатил
-            </button>
-            <button id="payment-close-btn" class="mt-2 w-full bg-white text-black font-semibold py-2 px-4 rounded-btn transition duration-300 transform hover:scale-105">
-                Отмена
-            </button>
-            <p id="payment-error" class="text-red-500 text-sm mt-2 hidden text-center">Не удалось отправить данные заказа. Пожалуйста, попробуйте еще раз.</p>
         </div>
     </div>
 
@@ -761,23 +728,31 @@ function initializeApp() {
     const phone = document.getElementById('order-phone').value;
 
     if (name && address && email && phone) {
-        orderData = {
-            product_id: selectedProduct.id,
-            product_name: selectedProduct.name,
-            size: selectedSize || 'N/A',
-            product_price: selectedProduct.price,
-            name: name,
-            address: address,
-            email: email,
-            phone: phone
-        };
+    orderData = {
+        product_id: selectedProduct.id,
+        product_name: selectedProduct.name,
+        size: selectedSize || 'N/A',
+        product_price: selectedProduct.price,
+        name: name,
+        address: address,
+        email: email,
+        phone: phone
+    };
 
-                orderFormModal.classList.add('hidden');
-                document.getElementById('payment-price').textContent = `${orderData.product_price} ₽`;
-                paymentModal.classList.remove('hidden'); // Вот эта строка
-            } else {
-                document.getElementById('form-error').classList.remove('hidden');
-            }
+    // Сразу отправляем данные в Telegram без показа модального окна оплаты
+    const dataToSend = {
+        action: 'order_completed',
+        payload: orderData
+    };
+    Telegram.WebApp.sendData(JSON.stringify(dataToSend));
+    
+    // Показываем сообщение об успешной отправке и скрываем форму
+    showMessageModal('Ваш заказ отправлен! Вскоре с вами свяжется администратор.');
+    orderFormModal.classList.add('hidden');
+
+} else {
+    document.getElementById('form-error').classList.remove('hidden');
+}
         });
 
         paymentCloseBtn.addEventListener('click', () => {
@@ -795,23 +770,6 @@ function initializeApp() {
             selectedProduct = null;
             selectedSize = null;
             orderData = {};
-        });
-
-        paymentConfirmBtn.addEventListener('click', async () => {
-            console.log("Payment confirmed. Order data:", orderData);
-                const dataToSend = {
-                action: 'order_completed',
-                payload: orderData
-            };
-            try {
-                // Отправляем данные в бота
-                Telegram.WebApp.sendData(JSON.stringify(dataToSend));
-                showMessageModal('Ваш заказ отправлен! Вскоре с вами свяжется администратор.');
-                paymentModal.classList.add('hidden');
-            } catch (error) {
-                console.error("Failed to send data to Telegram bot:", error);
-                document.getElementById('payment-error').classList.remove('hidden');
-            }
         });
 
         copyCardBtn.addEventListener('click', () => {
