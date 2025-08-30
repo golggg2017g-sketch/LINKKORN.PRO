@@ -1,4 +1,4 @@
-[bot.html](https://github.com/user-attachments/files/22061701/bot.html)
+[bot.html](https://github.com/user-attachments/files/22061741/bot.html)
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -127,7 +127,6 @@
     </style>
 </head>
 <body class="bg-white text-black min-h-screen p-4 flex flex-col items-center">
-
     <!-- Основной контейнер приложения -->
     <div id="main-content" class="w-full max-w-2xl bg-white rounded-box shadow-2xl p-6 relative">
         
@@ -428,6 +427,24 @@
         let selectedSize = null;
         let orderData = {};
 
+        // Принудительно скрываем все модальные окна при загрузке страницы
+document.addEventListener('DOMContentLoaded', function() {
+    const modalsToHide = [
+        'password-modal',
+        'details-view',
+        'order-form-modal',
+        'payment-modal',
+        'modal-message'
+    ];
+    
+    modalsToHide.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) element.classList.add('hidden');
+    });
+    
+    if (mainContent) mainContent.classList.remove('hidden');
+});
+
         // ----------------- Функции для работы с данными и отображением -----------------
 
         // Функция для полного сброса состояния приложения
@@ -635,12 +652,33 @@
 
         // Функция инициализации приложения
 function initializeApp() {
-        console.log("Initializing app...");
-        resetAppState();
-        hideAllModals(); // Скрываем все модальные окна
-        mainContent.classList.remove('hidden');
-        filterProducts();
+    console.log("Initializing app...");
+    
+    // Жесткий сброс всех модальных окон
+    const allModals = [
+        passwordModal,
+        detailsView,
+        orderFormModal,
+        paymentModal,
+        modalMessage
+    ];
+    
+    allModals.forEach(modal => {
+        if (modal) modal.classList.add('hidden');
+    });
+    
+    // Показываем только основной контент
+    if (mainContent) mainContent.classList.remove('hidden');
+    
+    // Сбрасываем состояние
+    resetAppState();
+    
+    // Загружаем и фильтруем товары
+    filterProducts();
+    
+    console.log("App initialized successfully");
 }
+
 
     // Скрываем все модальные окна
     document.getElementById('password-modal').classList.add('hidden');
